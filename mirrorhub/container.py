@@ -61,3 +61,7 @@ def create_sslcert():
     exec_cmd('letsencrypt certonly %s --register-unsafely-without-email \
              --agree-tos -d %s' % (LETSENCRYPT_ARGS, HOSTNAME))
     os.kill(nginx.pid, signal.SIGTERM)
+
+def renew_sslcert():
+    '''renew an existing letsencrypt ssl certificate'''
+    exec_cmd('letsencrypt renew ' + LETSENCRYPT_ARGS)
