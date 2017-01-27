@@ -1,4 +1,4 @@
-'''submodule if mirrorhub, which provides method to initialize the mirror container'''
+'''submodule of mirrorhub, which provides methods to initialize the mirror container'''
 import os
 import signal
 import socket
