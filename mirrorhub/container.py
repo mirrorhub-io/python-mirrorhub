@@ -43,3 +43,13 @@ def build_nginx_conf(temp_name):
     if os.path.isfile(PATHS['nginx']['s-e']):
         os.unlink(PATHS['nginx']['s-e'])
     os.symlink(PATHS['nginx']['s-a'], PATHS['nginx']['s-e'])
+
+def build_rsync_conf():
+    '''build the rsync config out of the given template
+    args:
+        temp_name (str): name of the jinja2 based template file'''
+    template = Template(open(PATHS['templates']).read())
+    with open(PATHS['rsync'], 'w+') as file_:
+        ## FIXME
+        # we need an api call for the mirror name
+        file_.write(template.render(mirror_name='???'))
