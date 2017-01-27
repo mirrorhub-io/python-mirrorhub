@@ -30,3 +30,16 @@ def dhparams_exists():
     returns:
         bool: check result'''
     return os.path.isfile(PATHS['dhparams'])
+
+def build_nginx_conf(temp_name):
+    '''build the nginx config out of the given template
+    args:
+        temp_name (str): name of the jinja2 based template file'''
+    template = Template(open(PATHS['templates'] + temp_name + '.j2').read())
+    with open(PATHS['nginx']['s-a'], 'w+') as file_:
+        ## FIXME
+        # we need an api call for the mirror name
+        file_.write(template.render(domain=HOSTNAME, mirror_name='???'))
+    if os.path.isfile(PATHS['nginx']['s-e']):
+        os.unlink(PATHS['nginx']['s-e'])
+    os.symlink(PATHS['nginx']['s-a'], PATHS['nginx']['s-e'])
