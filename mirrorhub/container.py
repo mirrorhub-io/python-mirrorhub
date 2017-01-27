@@ -18,3 +18,9 @@ PATHS = {'letsencrypt': '',
          'rsync': '/etc/rsyncd.conf',
          'nginx': {'s-a': '/etc/nginx/sites-available/mirror.conf',
                    's-e': '/etc/nginx/sites-enabled/mirror.conf'}}
+
+def sslcert_exists():
+    '''check whether a ssl certificate already exists
+    returns:
+        bool: check result'''
+    return os.path.exists(os.path.join([PATHS['letsencrypt'], 'live', '']))
