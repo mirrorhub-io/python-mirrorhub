@@ -8,5 +8,6 @@ setup(name='mirrorhub',
       author_email='fmarkus@mailbox.org',
       license='MIT',
       packages=['mirrorhub'],
+      scripts=['bin/init_client.py'],
       install_required=['jinja2'],
       zip_safe=False)
