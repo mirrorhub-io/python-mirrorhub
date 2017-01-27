@@ -65,3 +65,7 @@ def create_sslcert():
 def renew_sslcert():
     '''renew an existing letsencrypt ssl certificate'''
     exec_cmd('letsencrypt renew ' + LETSENCRYPT_ARGS)
+
+def run_supervisor():
+    '''run the supervisord in the docker container'''
+    exec_cmd('/usr/bin/supervisord')
