@@ -53,3 +53,11 @@ def build_rsync_conf():
         ## FIXME
         # we need an api call for the mirror name
         file_.write(template.render(mirror_name='???'))
+
+def create_sslcert():
+    '''create a letsencrypt ssl certificate'''
+    build_nginx_conf('mirror_nonssl')
+    nginx = Popen('/usr/sbin/nginx')
+    exec_cmd('letsencrypt certonly %s --register-unsafely-without-email \
+             --agree-tos -d %s' % (LETSENCRYPT_ARGS, HOSTNAME))
+    os.kill(nginx.pid, signal.SIGTERM)
