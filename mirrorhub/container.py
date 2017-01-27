@@ -24,3 +24,9 @@ def sslcert_exists():
     returns:
         bool: check result'''
     return os.path.exists(os.path.join([PATHS['letsencrypt'], 'live', '']))
+
+def dhparams_exists():
+    '''check whether dhparams already exists
+    returns:
+        bool: check result'''
+    return os.path.isfile(PATHS['dhparams'])
