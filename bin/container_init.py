@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''init script which prepares our docker container'''
+"""Init script which prepares our docker container."""
 from mirrorhub import LOGO
 from mirrorhub import container as ct
 
@@ -9,7 +9,8 @@ print(LOGO)
 if ct.dhparams_exists():
     print('[nginx] Using existing dhparams')
 else:
-    print('[nginx] Did not found dhparams, generating. This may take a while..')
+    print('[nginx] Did not found dhparams, generating.\
+           This may take a while..')
     ct.create_dhparams()
     print('[nginx] Finished generating.')
 

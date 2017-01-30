@@ -1,3 +1,5 @@
+"""Python3 module for mirrorhub.io."""
+
 LOGO = r'''
            _                     _           _      _
           (_)                   | |         | |    (_)

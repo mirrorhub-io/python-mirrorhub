@@ -1,4 +1,4 @@
-'''setup file to install the mirrorhub module'''
+"""Setup file to install the mirrorhub module."""
 from setuptools import setup
 
 setup(name='mirrorhub',
