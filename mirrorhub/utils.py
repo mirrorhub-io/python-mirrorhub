@@ -9,3 +9,14 @@ def exec_cmd(command):
         command (str): shell command
     """
     run(command, stdout=DEVNULL, stderr=STDOUT, shell=True)
+
+
+def exec_rsync(source, dest):
+    """Sync files from the source url to destination path.
+
+    Args:
+        source (str): source url to sync from
+        dest (str): destination path
+    """
+    exec_cmd(' '.join(['/usr/bin/rsync', '-rlvh', '--update', '--delete',
+                       'rsync://' + source, dest]))
