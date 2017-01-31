@@ -34,8 +34,20 @@ class Agent():
         self.sync_dest = data['dest']
         self.sync_offset = data['offset']/60
 
+    def check_sync_source(self):
+        """Check whether the rsync port is open at source.
+
+        Returns:
+            bool: true  if rsync port is open
+        """
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        return bool(sock.connect_ex((self.sync_source, 873)) == 0)
+
     def sync_mirror(self):
         """Sync the mirrors data via rsync."""
-        # TODO check whether the source is available
-        exec_rsync(self.sync_source, self.sync_dest)
-        self.last_sync = dt.now()
+        if self.check_sync_source():
+            exec_rsync(self.sync_source, self.sync_dest)
+            self.last_sync = dt.now()
+        else:
+            # recheck in 10min
+            self.last_sync += td(hours=1/6)
