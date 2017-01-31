@@ -25,4 +25,4 @@ class APIClient():
         Returns:
             dict: data as JSON
         """
-        return self._get('/v1/mirror/self')
+        return self._get('/v1/mirrors/self').text
