@@ -2,6 +2,7 @@
 
 which provides an api client
 """
+import json
 import requests as req
 
 
