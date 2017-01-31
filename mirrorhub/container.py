@@ -48,8 +48,7 @@ def build_nginx_conf(temp_name):
     """
     template = Template(open(PATHS['templates'] + temp_name + '.j2').read())
     with open(PATHS['nginx']['s-a'], 'w+') as file_:
-        # FIXME we need an api call for the mirror name
-        file_.write(template.render(domain=DOMAIN, mirror_name='???'))
+        file_.write(template.render(domain=DOMAIN, mirror_name=SERVICE))
     if os.path.isfile(PATHS['nginx']['s-e']):
         os.unlink(PATHS['nginx']['s-e'])
     os.symlink(PATHS['nginx']['s-a'], PATHS['nginx']['s-e'])
@@ -63,8 +62,7 @@ def build_rsync_conf():
     """
     template = Template(open(PATHS['templates']).read())
     with open(PATHS['rsync'], 'w+') as file_:
-        # FIXME we need an api call for the mirror name
-        file_.write(template.render(mirror_name='???'))
+        file_.write(template.render(mirror_name=SERVICE))
 
 
 def create_sslcert():
