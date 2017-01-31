@@ -10,7 +10,6 @@ from jinja2 import Template
 from mirrorhub.utils import exec_cmd
 
 
-HOSTNAME = socket.gethostname()
 LETSENCRYPT_ARGS = ' '.join(['-a webroot',
                              '--webroot-path=/tmp/letsencrypt',
                              '--rsa-key-size 4096',
@@ -50,7 +49,7 @@ def build_nginx_conf(temp_name):
     template = Template(open(PATHS['templates'] + temp_name + '.j2').read())
     with open(PATHS['nginx']['s-a'], 'w+') as file_:
         # FIXME we need an api call for the mirror name
-        file_.write(template.render(domain=HOSTNAME, mirror_name='???'))
+        file_.write(template.render(domain=DOMAIN, mirror_name='???'))
     if os.path.isfile(PATHS['nginx']['s-e']):
         os.unlink(PATHS['nginx']['s-e'])
     os.symlink(PATHS['nginx']['s-a'], PATHS['nginx']['s-e'])
@@ -73,7 +72,7 @@ def create_sslcert():
     build_nginx_conf('mirror_nonssl')
     nginx = Popen('/usr/sbin/nginx')
     exec_cmd('letsencrypt certonly %s --register-unsafely-without-email \
-             --agree-tos -d %s' % (LETSENCRYPT_ARGS, HOSTNAME))
+             --agree-tos -d %s' % (LETSENCRYPT_ARGS, DOMAIN))
     os.kill(nginx.pid, signal.SIGTERM)
 
 
