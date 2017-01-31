@@ -4,7 +4,6 @@ provides methods to initialize the mirror container.
 """
 import os
 import signal
-import socket
 from subprocess import Popen
 from jinja2 import Template
 from mirrorhub.utils import exec_cmd
@@ -40,7 +39,7 @@ def dhparams_exists():
     return os.path.isfile(PATHS['dhparams'])
 
 
-def build_nginx_conf(temp_name):
+def build_nginx_conf(temp_name, domain, service):
     """Build the nginx config out of the given template.
 
     Args:
@@ -48,13 +47,13 @@ def build_nginx_conf(temp_name):
     """
     template = Template(open(PATHS['templates'] + temp_name + '.j2').read())
     with open(PATHS['nginx']['s-a'], 'w+') as file_:
-        file_.write(template.render(domain=DOMAIN, mirror_name=SERVICE))
+        file_.write(template.render(domain=domain, mirror_name=service))
     if os.path.isfile(PATHS['nginx']['s-e']):
         os.unlink(PATHS['nginx']['s-e'])
     os.symlink(PATHS['nginx']['s-a'], PATHS['nginx']['s-e'])
 
 
-def build_rsync_conf():
+def build_rsync_conf(service):
     """Build the rsync config out of the given template.
 
     Args:
@@ -62,15 +61,15 @@ def build_rsync_conf():
     """
     template = Template(open(PATHS['templates']).read())
     with open(PATHS['rsync'], 'w+') as file_:
-        file_.write(template.render(mirror_name=SERVICE))
+        file_.write(template.render(mirror_name=service))
 
 
-def create_sslcert():
+def create_sslcert(domain):
     """Create a letsencrypt ssl certificate."""
     build_nginx_conf('mirror_nonssl')
     nginx = Popen('/usr/sbin/nginx')
     exec_cmd('letsencrypt certonly %s --register-unsafely-without-email \
-             --agree-tos -d %s' % (LETSENCRYPT_ARGS, DOMAIN))
+             --agree-tos -d %s' % (LETSENCRYPT_ARGS, domain))
     os.kill(nginx.pid, signal.SIGTERM)
 
 
