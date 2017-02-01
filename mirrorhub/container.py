@@ -24,6 +24,8 @@ PATHS = {'letsencrypt': '',
 def sslcert_exists():
     """Check whether a ssl certificate already exists.
 
+    Args:
+        domain (str): mirror domain
     Returns:
         bool: check result
     """
@@ -44,6 +46,8 @@ def build_nginx_conf(temp_name, domain, service):
 
     Args:
         temp_name (str): name of the jinja2 based template file
+        domain (str): mirror domain
+        service (str): name of the mirrored service
     """
     template = Template(open(PATHS['templates'] + temp_name + '.j2').read())
     with open(PATHS['nginx']['s-a'], 'w+') as file_:
@@ -57,16 +61,21 @@ def build_rsync_conf(service):
     """Build the rsync config out of the given template.
 
     Args:
-        temp_name (str): name of the jinja2 based template file
+        service (str): name of the mirrored service
     """
     template = Template(open(PATHS['templates']).read())
     with open(PATHS['rsync'], 'w+') as file_:
         file_.write(template.render(mirror_name=service))
 
 
-def create_sslcert(domain):
-    """Create a letsencrypt ssl certificate."""
-    build_nginx_conf('mirror_nonssl')
+def create_sslcert(domain, service):
+    """Create a letsencrypt ssl certificate.
+
+    Args:
+        domain (str): mirror domain
+        service (str): name of the mirrored service
+    """
+    build_nginx_conf('mirror_nonssl', domain, service)
     nginx = Popen('/usr/sbin/nginx')
     exec_cmd('letsencrypt certonly %s --register-unsafely-without-email \
              --agree-tos -d %s' % (LETSENCRYPT_ARGS, domain))

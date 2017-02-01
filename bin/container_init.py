@@ -25,7 +25,7 @@ if ct.sslcert_exists():
     ct.renew_sslcert()
 else:
     print('[cert] Missing certificate for domain. Request new one..')
-    ct.create_sslcert(DOMAIN)
+    ct.create_sslcert(DOMAIN, SERVICE)
 
 
 print('[nginx] Applying final site configuration..')
