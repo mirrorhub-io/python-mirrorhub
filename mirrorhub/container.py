@@ -21,7 +21,7 @@ PATHS = {'letsencrypt': '',
                    's-e': '/etc/nginx/sites-enabled/mirror.conf'}}
 
 
-def sslcert_exists():
+def sslcert_exists(domain):
     """Check whether a ssl certificate already exists.
 
     Args:
@@ -29,7 +29,7 @@ def sslcert_exists():
     Returns:
         bool: check result
     """
-    return os.path.exists(os.path.join([PATHS['letsencrypt'], 'live', '']))
+    return os.path.exists(os.path.join([PATHS['letsencrypt'], 'live', domain]))
 
 
 def dhparams_exists():

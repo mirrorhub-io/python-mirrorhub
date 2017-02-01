@@ -20,7 +20,7 @@ else:
     ct.create_dhparams()
     print('[nginx] Finished generating.')
 
-if ct.sslcert_exists():
+if ct.sslcert_exists(DOMAIN):
     print('[cert] Found certificate for domain. Attempt renew..')
     ct.renew_sslcert()
 else:
